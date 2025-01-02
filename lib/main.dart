@@ -1,5 +1,4 @@
 import 'package:blog_posting_app/features/auth/presentation/views/signin_view.dart';
-import 'package:blog_posting_app/features/auth/presentation/views/signup_view.dart';
 import 'package:flutter/material.dart';
 
 import 'config/theme/app_theme.dart';
