@@ -1,8 +1,10 @@
 import 'package:blog_posting_app/config/theme/app_color.dart';
+import 'package:blog_posting_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_posting_app/features/auth/presentation/components/auth_field.dart';
 import 'package:blog_posting_app/features/auth/presentation/components/auth_gradient_button.dart';
 import 'package:blog_posting_app/features/auth/presentation/views/signin_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -22,10 +24,27 @@ class _SignUpViewState extends State<SignUpView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _navigateToSignIn() => Navigator.push(
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _navigateToSignIn() => Navigator.pop(
         context,
         SignInView.route(),
       );
+
+  void _onSignUp() {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+            AuthSignUp(
+              name: _nameController.text.trim(),
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            ),
+          );
+    }
+  }
 
   @override
   void dispose() {
@@ -84,7 +103,8 @@ class _SignUpViewState extends State<SignUpView> {
           const SizedBox(
             height: 20.0,
           ),
-          const AuthGradientButton(
+          AuthGradientButton(
+            onPressed: _onSignUp,
             text: 'Sign up',
           ),
           const SizedBox(

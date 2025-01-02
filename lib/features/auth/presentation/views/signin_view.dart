@@ -74,7 +74,8 @@ class _SignInViewState extends State<SignInView> {
           const SizedBox(
             height: 20.0,
           ),
-          const AuthGradientButton(
+          AuthGradientButton(
+            onPressed: () {},
             text: 'Sign in',
           ),
           const SizedBox(
