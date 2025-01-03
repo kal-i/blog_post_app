@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 class BlogView extends StatelessWidget {
   const BlogView({super.key});
 
+  static route() => MaterialPageRoute(
+        builder: (context) => const BlogView(),
+      );
+
   void _navigateToAddNewBlog(BuildContext context) {
     Navigator.push(
       context,
