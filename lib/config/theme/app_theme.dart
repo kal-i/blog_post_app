@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static _border([Color color = AppColor.borderColor]) => OutlineInputBorder(
-    borderSide: BorderSide(
-      color: color,
-      width: 3.0,
-    ),
-    borderRadius: BorderRadius.circular(10.0),
-  );
+        borderSide: BorderSide(
+          color: color,
+          width: 3.0,
+        ),
+        borderRadius: BorderRadius.circular(10.0),
+      );
 
   static final darkThemeMode = ThemeData.dark().copyWith(
     appBarTheme: const AppBarTheme(
@@ -18,7 +18,15 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.all(27.0),
       enabledBorder: _border(),
-      focusedBorder: _border(AppColor.gradient2),
+      focusedBorder: _border(
+        AppColor.gradient2,
+      ),
+    ),
+    chipTheme: const ChipThemeData(
+      color: WidgetStatePropertyAll(
+        AppColor.backgroundColor,
+      ),
+      side: BorderSide.none,
     ),
   );
 }
