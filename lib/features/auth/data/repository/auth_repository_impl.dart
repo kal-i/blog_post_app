@@ -1,10 +1,11 @@
 import 'package:blog_posting_app/core/error/exceptions.dart';
 import 'package:blog_posting_app/core/error/failure.dart';
 import 'package:blog_posting_app/features/auth/data/data_sources/remote/auth_remote_data_source.dart';
-import 'package:blog_posting_app/features/auth/domain/entities/user.dart';
 import 'package:blog_posting_app/features/auth/domain/repository/auth_repository.dart';
 import 'package:fpdart/src/either.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../../core/common/entities/user.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({

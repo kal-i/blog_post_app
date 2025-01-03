@@ -1,3 +1,4 @@
+import 'package:blog_posting_app/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:blog_posting_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_posting_app/features/auth/presentation/views/signin_view.dart';
 import 'package:blog_posting_app/init_dependencies.dart';
@@ -13,6 +14,9 @@ Future<void> main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider<AppUserCubit>(
+          create: (_) => serviceLocator<AppUserCubit>(),
+        ),
         BlocProvider<AuthBloc>(
           create: (_) => serviceLocator<AuthBloc>(),
         ),
@@ -22,6 +26,9 @@ Future<void> main() async {
   );
 }
 
+/// initially, it will trigger the AuthIsUserLoggedIn event,
+/// checking whether user is present or not
+/// if not logged in, emit auth error, otherwise, emit auth success
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -44,7 +51,25 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Blog Posting Application',
       theme: AppTheme.darkThemeMode,
-      home: const SignInView(),
+
+      /// when state is AppUserLoggedIn, build SignInView
+      home: BlocSelector<AppUserCubit, AppUserState, bool>(
+        selector: (state) {
+          return state is AppUserLoggedIn;
+        },
+        builder: (context, state) {
+          if (state) {
+            return Scaffold(
+              body: Center(
+                child: Text(
+                  'Logged in!',
+                ),
+              ),
+            );
+          }
+          return const SignInView();
+        },
+      ),
     );
   }
 }
