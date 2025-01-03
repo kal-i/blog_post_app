@@ -19,3 +19,5 @@ final class BlogUpload extends BlogEvent {
   final List<String> topics;
   final File image;
 }
+
+final class BlogFetchAllBlogs extends BlogEvent {}

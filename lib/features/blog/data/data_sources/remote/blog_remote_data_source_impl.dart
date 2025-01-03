@@ -46,7 +46,9 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
             'blog_images',
           )
           .upload(
-            blog.id, /// path
+            blog.id,
+
+            /// path
             image,
           );
 
@@ -57,6 +59,36 @@ class BlogRemoteDataSourceImpl implements BlogRemoteDataSource {
           .getPublicUrl(
             blog.id,
           );
+    } catch (e) {
+      throw ServerException(
+        message: e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<List<BlogModel>> getAllBlogs() async {
+    try {
+      /// fetch all blogs and the name of author from profiles table
+      /// with the use of joins
+      final blogModels = await supabaseClient
+          .from(
+            'blogs',
+          )
+          .select(
+            '*, profiles (name)',
+          );
+
+      return blogModels
+          .map(
+            (blog) => BlogModel.fromJson(
+              blog,
+            ).copyWith(
+              /// [table][column field]
+              authorName: blog['profiles']['name'],
+            ),
+          )
+          .toList();
     } catch (e) {
       throw ServerException(
         message: e.toString(),

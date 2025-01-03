@@ -4,6 +4,7 @@ class BlogModel extends BlogEntity {
   const BlogModel({
     required super.id,
     required super.authorId,
+    super.authorName,
     required super.title,
     required super.content,
     required super.imageUrl,
@@ -11,6 +12,9 @@ class BlogModel extends BlogEntity {
     required super.updatedAt,
   });
 
+  /// we won't add the author name field in both toJson() and fromJson()
+  /// because there are use-cases where they are not needed like uploading blog
+  /// instead, we will update the blog model using the copyWith method
   factory BlogModel.fromJson(Map<String, dynamic> json) {
     return BlogModel(
       id: json['id'],
@@ -45,6 +49,7 @@ class BlogModel extends BlogEntity {
   BlogModel copyWith({
     String? id,
     String? authorId,
+    String? authorName,
     String? title,
     String? content,
     String? imageUrl,
@@ -54,6 +59,7 @@ class BlogModel extends BlogEntity {
     return BlogModel(
       id: id ?? this.id,
       authorId: authorId ?? this.authorId,
+      authorName: authorName ?? this.authorName,
       title: title ?? this.title,
       content: content ?? this.content,
       imageUrl: imageUrl ?? this.imageUrl,

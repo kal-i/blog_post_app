@@ -90,7 +90,7 @@ class _AddNewBlogViewState extends State<AddNewBlogView> {
             );
           }
 
-          if (state is BlogSuccess) {
+          if (state is BlogUploadSuccess) {
             Navigator.pushAndRemoveUntil(
               context,
               BlogView.route(),
