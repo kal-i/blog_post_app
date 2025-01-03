@@ -36,7 +36,7 @@ class _SignUpViewState extends State<SignUpView> {
         SignInView.route(),
       );
 
-  void _onSignUp() {
+  void _signUp() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
             AuthSignUp(
@@ -120,7 +120,7 @@ class _SignUpViewState extends State<SignUpView> {
                 height: 20.0,
               ),
               AuthGradientButton(
-                onPressed: _onSignUp,
+                onPressed: _signUp,
                 text: 'Sign up',
               ),
               const SizedBox(
