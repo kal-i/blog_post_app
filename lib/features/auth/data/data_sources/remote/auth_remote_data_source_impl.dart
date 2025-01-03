@@ -69,4 +69,42 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
     }
   }
+
+  @override
+  Session? get currentUserSession => supabaseClient.auth.currentSession;
+
+  @override
+  Future<UserModel?> getCurrentUserData() async {
+    try {
+      /// if current user session is not null
+      /// meaning user is logged in
+      if (currentUserSession != null) {
+        /// .from() method directly talks to the supabase DB, inside we pass the table name
+        /// .select() to get all fields cause by default it is set to '*'
+        /// to select a specific field: 'id, name'
+        /// .eq() will get current user data based on the id col in the table
+        final userData = await supabaseClient
+            .from(
+              'profiles',
+            )
+            .select()
+            .eq(
+              'id',
+              currentUserSession!.user.id,
+            );
+
+        /// return the first data from the list
+        return UserModel.fromJson(
+          userData.first,
+        ).copyWith(
+          email: currentUserSession!.user.email,
+        );
+      }
+      return null;
+    } catch (e) {
+      throw ServerException(
+        message: e.toString(),
+      );
+    }
+  }
 }

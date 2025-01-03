@@ -49,12 +49,40 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final user = await fn();
 
-      return right(user);
+      return right(
+        user,
+      );
     } on AuthException catch (e) {
       return left(
         Failure(
           e.message,
         ),
+      );
+    } on ServerException catch (e) {
+      return left(
+        Failure(
+          e.message,
+        ),
+      );
+    }
+  }
+
+  /// we cannot get the _getUser() func here because this is nullable
+  @override
+  Future<Either<Failure, UserEntity>> currentUser() async {
+    try {
+      final user = await authRemoteDataSource.getCurrentUserData();
+
+      if (user == null) {
+        return left(
+          const Failure(
+            'User not logged in.',
+          ),
+        );
+      }
+
+      return right(
+        user,
       );
     } on ServerException catch (e) {
       return left(
