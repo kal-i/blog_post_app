@@ -10,10 +10,10 @@ final class AuthLoading extends AuthState {}
 
 final class AuthSuccess extends AuthState {
   const AuthSuccess({
-    required this.userId,
+    required this.user,
   });
 
-  final String userId;
+  final UserEntity user;
 }
 
 final class AuthError extends AuthState {

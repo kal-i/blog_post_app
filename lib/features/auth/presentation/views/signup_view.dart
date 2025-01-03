@@ -1,4 +1,6 @@
 import 'package:blog_posting_app/config/theme/app_color.dart';
+import 'package:blog_posting_app/core/common/components/loader.dart';
+import 'package:blog_posting_app/core/utils/show_snackbar.dart';
 import 'package:blog_posting_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:blog_posting_app/features/auth/presentation/components/auth_field.dart';
 import 'package:blog_posting_app/features/auth/presentation/components/auth_gradient_button.dart';
@@ -66,70 +68,87 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   Widget _buildForm() {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Sign Up.',
-            style: TextStyle(
-              fontSize: 50.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(
-            height: 30.0,
-          ),
-          AuthField(
-            controller: _nameController,
-            hintText: 'Name',
-          ),
-          const SizedBox(
-            height: 15.0,
-          ),
-          AuthField(
-            controller: _emailController,
-            hintText: 'Email',
-          ),
-          const SizedBox(
-            height: 15.0,
-          ),
-          AuthField(
-            controller: _passwordController,
-            hintText: 'Password',
-            isObscureText: true,
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          AuthGradientButton(
-            onPressed: _onSignUp,
-            text: 'Sign up',
-          ),
-          const SizedBox(
-            height: 20.0,
-          ),
-          GestureDetector(
-            onTap: _navigateToSignIn,
-            child: RichText(
-              text: TextSpan(
-                text: 'Have an account? ',
-                style: Theme.of(context).textTheme.titleMedium,
-                children: [
-                  TextSpan(
-                    text: 'Sign In',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColor.gradient2,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ],
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthError) {
+          return showSnackBar(
+            context,
+            state.message,
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is AuthLoading) {
+          return const Loader();
+        }
+
+        return Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Sign Up.',
+                style: TextStyle(
+                  fontSize: 50.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+              const SizedBox(
+                height: 30.0,
+              ),
+              AuthField(
+                controller: _nameController,
+                hintText: 'Name',
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
+              AuthField(
+                controller: _emailController,
+                hintText: 'Email',
+              ),
+              const SizedBox(
+                height: 15.0,
+              ),
+              AuthField(
+                controller: _passwordController,
+                hintText: 'Password',
+                isObscureText: true,
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              AuthGradientButton(
+                onPressed: _onSignUp,
+                text: 'Sign up',
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              GestureDetector(
+                onTap: _navigateToSignIn,
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Have an account? ',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    children: [
+                      TextSpan(
+                        text: 'Sign In',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: AppColor.gradient2,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
